@@ -1,0 +1,7 @@
+python3-nmap
+beautifulsoup4~=4.9.3
+paramiko
+flask
+flask-login
+flask-wtf
+requests

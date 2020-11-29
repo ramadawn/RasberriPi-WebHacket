@@ -6,7 +6,7 @@ from LocalIP import returnIPNet
 
 
 #will look for open ports on a network and return list of IPs with that open port
-def findOpenPorts(port, scanRange = 255,network = "no input"): #network must be an iP address that ends in .0 ex 192.168.1.0
+def findOpenPorts(port, scanRange = 255,network =None): #network must be an iP address that ends in .0 ex 192.168.1.0
 
     maxIP = scanRange
     Avail_IP_List = []
@@ -15,7 +15,7 @@ def findOpenPorts(port, scanRange = 255,network = "no input"): #network must be 
     IP_network = returnIPNet()
 
     #if not ip address was added us the local IP
-    if(network != "no input"):
+    if(network != None):
         IP_network = network
 
     #Grab Prefex
