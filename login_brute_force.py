@@ -4,6 +4,10 @@ import requests
 Takes in a url and username/password formats, then attempts to log in using a dictionary of usernames and passwords.
 
 Returns a string containing the successful username and password combination
+
+Example:
+Call once you've ran the node.js server:
+brute_force_login(`http://localhost:3000/auth`, 'username', 'password')
 """
 
 
