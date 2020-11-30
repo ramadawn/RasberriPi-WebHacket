@@ -52,12 +52,14 @@ def retrieve_hacking():
     else:
         url = url_input.get()
         port = port_input.get()
+        try:
+            if url == "" or port == "":
+                result_text.insert(tk.END, "empty")
+                return
 
-        if url == "" or port == "":
-            result_text.insert(tk.END, "empty")
-            return
-
-        result = ssh_brute_force.brute_force(url, int(port))
+            result = ssh_brute_force.brute_force(url, int(port))
+        except:
+            result = f"Could not connect to port {port} on {url}."
 
 
 
