@@ -6,25 +6,25 @@ Setup instructions
 
 Download repository
 
-open terminal :
-
 sudo apt update
 
-sudo apt install python3-tk
+sudo apt purge python2.7-minimal
 
-sudo apt-get idle-pyhton3.8
+sudo apt-get install python3
 
-open terminal
+sudo apt install python3.tk
 
-PATH "$PATH:/usr/local/bin/python3"
-PYTHONPATH=/usr/local/bin/python3
 
-sudo apt install python3-pip
+
+PATH $PATH:/home/pi/.local/bin or add it manually to .bashrc
+
+open terminal and navigate to repository
 
 sudo apt install nmap
 
 pip install python3-nmap
 
 pip3 install -r requirements
+
 
 
