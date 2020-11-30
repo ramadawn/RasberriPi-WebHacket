@@ -5,13 +5,15 @@ from PortScan import findOpenPorts as findport
 window.title("Network Scanner")
 window.geometry("478x586")
 
+network_value = ""
+
 #function to grab text from network_input
 def retrieve_network():
-    put_in = network_input.get()
+    network_value = network_input.get()
     if network_input.get() == "":
         network_list.insert(0, "default network")
     else:
-       network_list.insert(0, put_in)
+       network_list.insert(0, network_value)
 
 #function to grab text from the 4 entries in login hacker
 def retrieve_hacking():
@@ -23,8 +25,12 @@ def retrieve_hacking():
     else:
         result_text.insert(tk.END, "works")
 
-#function to grab values from hacking importion?
-#def hacking_results():
+#attempt to make call the function in portscan
+#def findOpenPorts(network_value, scanRange = 255,network =None)
+
+#attempt to inport the values into network_list
+"""for ip in Avail_IP_List:
+    network_list.insert(0, ip)"""
 
 #main frames
 frame_header = tk.Frame(window, borderwidth=2, pady=2)
