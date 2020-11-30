@@ -8,11 +8,20 @@ window.geometry("478x586")
 #function to grab text from network_input
 def retrieve_network():
     put_in = network_input.get()
-    network_list.insert(0, put_in)
+    if network_input.get() == "":
+        network_list.insert(0, "default network")
+    else:
+       network_list.insert(0, put_in)
 
 #function to grab text from the 4 entries in login hacker
 def retrieve_hacking():
-    result_text.insert(tk.END, "works")
+    network_ip = network_list.get(network_list.curselection())
+    if network_ip != "":
+        result_text.insert(tk.END, network_ip)
+    if url_input.get() == "" or port_input.get() == "" or username_input.get == "" or password_input.get() == "":
+        result_text.insert(tk.END, "nothing inputted\n")
+    else:
+        result_text.insert(tk.END, "works")
 
 #function to grab values from hacking importion?
 #def hacking_results():
