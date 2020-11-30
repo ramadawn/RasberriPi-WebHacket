@@ -14,6 +14,7 @@ sudo apt-get install python3
 
 sudo apt install python3.tk
 
+sudo apt-get insatll pip3
 
 
 PATH $PATH:/home/pi/.local/bin or add it manually to .bashrc
