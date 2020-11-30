@@ -1,29 +1,69 @@
 import tkinter as tk
 window = tk.Tk()
 from PortScan import findOpenPorts as findport
+import LocalIP
+import ImprovedScanner
+import ssh_brute_force
+import login_brute_force
 
 window.title("Network Scanner")
-window.geometry("478x586")
+window.geometry("478x650")
 
 network_value = ""
 
 #function to grab text from network_input
 def retrieve_network():
-    network_value = network_input.get()
-    if network_input.get() == "":
-        network_list.insert(0, "default network")
-    else:
-       network_list.insert(0, network_value)
+    network = network_input.get()
+    if network == "":
+        network = None
+
+    port = network_port_input.get()
+    if port == "":
+        return
+
+    network_list.delete(0, tk.END)
+
+    open_ip_list, available_ip_list, vendors = ImprovedScanner.ImprovedScanner(int(port), network=network)
+
+    if len(open_ip_list) == 0:
+        network_list.insert(0, "No open ports found on any IP address.")
+
+    for idx, ip in enumerate(open_ip_list):
+        output = f"IP: {ip}      Vendor: {vendors.get(ip)}"
+        network_list.insert(idx, output)
 
 #function to grab text from the 4 entries in login hacker
 def retrieve_hacking():
-    network_ip = network_list.get(network_list.curselection())
-    if network_ip != "":
-        result_text.insert(tk.END, network_ip)
-    if url_input.get() == "" or port_input.get() == "" or username_input.get == "" or password_input.get() == "":
-        result_text.insert(tk.END, "nothing inputted\n")
+    result_text.delete('1.0', tk.END)
+
+    if brute_force_options.get() == "HTTP/HTTPS":
+        url = url_input.get()
+        username_format = username_input.get()
+        password_format = password_input.get()
+
+        if url == "" or username_format == "" or password_format == "":
+            result_text.insert(tk.END, "empty")
+            return
+
+        result = login_brute_force.brute_force_login(url, username_format, password_format)
+
+        if result == None:
+            return
     else:
-        result_text.insert(tk.END, "works")
+        url = url_input.get()
+        port = port_input.get()
+
+        if url == "" or port == "":
+            result_text.insert(tk.END, "empty")
+            return
+
+        result = ssh_brute_force.brute_force(url, int(port))
+
+
+
+
+
+    result_text.insert(tk.END, result)
 
 #attempt to make call the function in portscan
 #def findOpenPorts(network_value, scanRange = 255,network =None)
@@ -55,6 +95,8 @@ network_label = tk.Label(frame_scan, text = "Networks",font=(None, 12))
 frame_network = tk.Frame(frame_scan, borderwidth=2)
 network_address = tk.Label(frame_network, text = "Network Address:")
 network_input = tk.Entry(frame_network)
+network_port_label = tk.Label(frame_network, text = "Port:")
+network_port_input = tk.Entry(frame_network)
 network_button = tk.Button(frame_network,
                            text="Scan Networks",
                            bg='dark green',
@@ -70,23 +112,35 @@ network_label.pack()
 frame_network.pack(pady=2)
 network_address.grid(row=0, column=0, padx=2)
 network_input.grid(row=0, column=1, padx=2)
+network_port_label.grid(row=1, column=0, padx=2)
+network_port_input.grid(row=1, column=1, padx=2)
 network_button.grid(row=0, column=2, padx=2)
 
 network_list.pack(pady=5, padx=5)
 
 #inputing info to hack login site
+OptionList = [
+"HTTP/HTTPS",
+"SSH"
+]
 frame_hack = tk.Frame(bottom_frame, borderwidth=2, relief='sunken')
 info_label = tk.Label(frame_hack, text = "Login Hacker",font=(None, 12))
-
 hack_input = tk.Frame(frame_hack, borderwidth=2)
 url_label = tk.Label(hack_input, text = "URL Address:", anchor='e')
 url_input = tk.Entry(hack_input)
 port_label = tk.Label(hack_input, text = "Port Number:")
 port_input = tk.Entry(hack_input)
-username_label = tk.Label(hack_input, text = "Username:")
+username_label = tk.Label(hack_input, text = "Username Format:")
 username_input = tk.Entry(hack_input)
-password_label = tk.Label(hack_input, text = "Password:")
+password_label = tk.Label(hack_input, text = "Password Format:")
 password_input = tk.Entry(hack_input)
+
+#configure dropdown
+brute_force_options = tk.StringVar(window)
+brute_force_options.set(OptionList[0])
+opt = tk.OptionMenu(frame_hack, brute_force_options, *OptionList)
+opt.grid(row=2, column=1, padx=2, pady=2)
+opt.pack()
 
 button_scan = tk.Button(hack_input,
                         text="Scan",
@@ -114,9 +168,10 @@ username_label.grid(row=1, column=0, padx=2, pady=2)
 username_input.grid(row=1, column=1, padx=2, pady=2)
 password_label.grid(row=1, column=2, padx=2, pady=2)
 password_input.grid(row=1, column=3, padx=2, pady=2)
-
-button_scan.grid(row=2, column=0, padx=2, pady=2)
+button_scan.grid(row=2, column=2, padx=2, pady=2)
 
 frame_result.pack(fill='x', padx=2, pady=5)
 result_label.pack(pady=2, padx=5)
 result_text.pack(pady=5, padx=5)
+
+window.mainloop()
