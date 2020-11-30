@@ -10,7 +10,9 @@ open terminal :
 
 sudo apt update
 
-sudo apt install python3.tkpythjon
+sudo apt install python3-tk
+
+sudo apt-get idle-pyhton3.8
 
 open terminal
 
